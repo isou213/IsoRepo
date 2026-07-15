@@ -1,0 +1,27 @@
+name: Update Arabic CloudStream Repo
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download Mega Repo
+        run: |
+          mkdir -p repo
+          curl -L https://raw.githubusercontent.com/Stormunblessed/Cloudstream-Extensions-Arabic/master/repo.json -o repo/repo.json
+
+      - name: Commit
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Update Repo" || echo "No changes"
+          git push
